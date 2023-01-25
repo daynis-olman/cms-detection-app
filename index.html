@@ -1,48 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>CMS Detection App</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" crossorigin="anonymous" />
-  <link rel="stylesheet" type="text/css" href="style.css">
+  <title>CMS Detection</title>
+  <script>
+    function handleResponse(response) {
+      var data = JSON.parse(response);
+      var resultDiv = document.getElementById("result");
+      resultDiv.innerHTML = "Name: " + data.name + "<br>Version: " + data.version;
+    }
+  </script>
 </head>
 <body>
-  <div class="container">
-    <h1>CMS Detection App</h1>
-    <form id="form" action="#" method="post">
-      <input type="text" name="url" placeholder="Enter a URL">
-      <button type="submit">Submit</button>
-    </form>
-  </div>
-  <div id="modal" class="modal">
-    <div class="modal-content">
-      <span class="close-modal">&times;</span>
-      <p>Name: <span id="name"></span></p>
-      <p>Version: <span id="version"></span></p>
-    </div>
-  </div>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-  $(document).ready(function(){
-    // Attach a submit event listener to the form
-    $('#form').submit(function(event) {
-        event.preventDefault();
-        // Get the input URL
-        var url = $('input[name="url"]').val();
-        // Send a post request to the submit.php
-        $.post('submit.php', {url: url}, function(data) {
-            // Update the modal content with the returned data
-            $('#name').text(data.name);
-            $('#version').text(data.version);
-            // Show the modal
-            $('#modal').show();
-        });
-    });
-    // Attach a click event listener to the close button
-    $('.close-modal').click(function() {
-        // Hide the modal
-        $('#modal').hide();
-    });
-  });
-</script>
-  </body>
+  <form action="submit.php" method="post" onsubmit="event.preventDefault(); var xhr = new XMLHttpRequest(); xhr.open('POST', this.action, true); xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); xhr.onreadystatechange = function() { if (xhr.readyState === 4 && xhr.status === 200) { handleResponse(xhr.responseText); } }; xhr.send(new FormData(this));">
+    <label for="url">Enter URL:</label>
+    <input type="text" id="url" name="url">
+    <input type="submit" value="Submit">
+  </form>
+  <div id="result"></div>
+</body>
 </html>
