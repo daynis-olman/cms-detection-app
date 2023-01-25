@@ -2,20 +2,45 @@
 <html>
 <head>
   <title>CMS Detection</title>
-  <script>
-    function handleResponse(response) {
-      var data = JSON.parse(response);
-      var resultDiv = document.getElementById("result");
-      resultDiv.innerHTML = "Name: " + data.name + "<br>Version: " + data.version;
-    }
-  </script>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 </head>
 <body>
-  <form action="submit.php" method="post" onsubmit="event.preventDefault(); var xhr = new XMLHttpRequest(); xhr.open('POST', this.action, true); xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); xhr.onreadystatechange = function() { if (xhr.readyState === 4 && xhr.status === 200) { handleResponse(xhr.responseText); } }; xhr.send(new FormData(this));">
-    <label for="url">Enter URL:</label>
-    <input type="text" id="url" name="url">
+
+<div id="app">
+  <form @submit.prevent="submitForm">
+    <label>Enter URL:</label>
+    <input type="text" v-model="url" required>
     <input type="submit" value="Submit">
   </form>
-  <div id="result"></div>
+  <div v-if="showResult">
+    <p>Name: {{result.name}}</p>
+    <p>Version: {{result.version}}</p>
+  </div>
+</div>
+
+<script>
+new Vue({
+  el: '#app',
+  data: {
+    url: '',
+    result: {},
+    showResult: false
+  },
+  methods: {
+    submitForm() {
+      axios.post('submit.php', {
+        url: this.url
+      })
+      .then(response => {
+        this.result = response.data;
+        this.showResult = true;
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    }
+  }
+});
+</script>
 </body>
 </html>
