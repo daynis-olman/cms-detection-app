@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CMS Detection</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>CMS Detection</h1>
+      <form method="post" action="submit.php">
+        <label for="url">Enter URL:</label>
+        <input type="text" id="url" name="url">
+        <input type="submit" value="Submit">
+      </form>
+
+      <div id="modal" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <p id="output"></p>
+        </div>
+      </div>
+
+      <script>
+        var modal = document.getElementById("modal");
+        var btn = document.getElementById("submit");
+        var span = document.getElementsByClassName("close")[0];
+        btn.onclick = function() {
+            modal.style.display = "block";
+        }
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+      </script>
+    </div>
+  </div>
+</body>
+</html>
