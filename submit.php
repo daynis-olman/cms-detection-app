@@ -18,7 +18,7 @@
   // Decode the JSON response
   $data = json_decode($response);
   
-  // Extract the necessary information
+  // Extract the necessary information from the results array
   $name = $data->results[0]->name;
   $version = $data->results[0]->version;
   
